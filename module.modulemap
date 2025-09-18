@@ -1,0 +1,32 @@
+module GeoJSONVT {
+    umbrella header "include/mapbox/geojsonvt.hpp"
+
+    module geojsonvt {
+        header "include/mapbox/geojsonvt.hpp"
+        header "include/mapbox/geojsonvt/types.hpp"
+        header "include/mapbox/geojsonvt/convert.hpp"
+        header "include/mapbox/geojsonvt/wrap.hpp"
+        header "include/mapbox/geojsonvt/clip.hpp"
+        header "include/mapbox/geojsonvt/simplify.hpp"
+        header "include/mapbox/geojsonvt/tile.hpp"
+        export *
+    }
+
+    module deps {
+        module mapbox {
+            header "deps/include/mapbox/geometry.hpp"
+            header "deps/include/mapbox/feature.hpp"
+            header "deps/include/mapbox/variant.hpp"
+            header "deps/include/mapbox/geojson.hpp"
+            export *
+        }
+
+        module rapidjson {
+            umbrella "deps/include/rapidjson"
+            export *
+        }
+    }
+
+    export *
+    module * { export * }
+}

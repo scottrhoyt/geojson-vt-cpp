@@ -18,12 +18,30 @@ This project uses Make as its build system with Mason for dependency management.
 - `make clean` - Clean build artifacts
 
 ### Dependencies
-Dependencies are managed via Mason package manager and automatically installed when building. Key dependencies include:
-- geometry (Mapbox geometry types)
-- geojson (GeoJSON parsing)
-- variant (C++14 variant implementation)
-- gtest (for testing)
-- benchmark (for performance testing)
+Dependencies are managed via Git submodules for better Swift Package Manager compatibility. Key dependencies include:
+- geometry (Mapbox geometry types) - `deps/geometry/`
+- geojson (GeoJSON parsing) - `deps/geojson/`
+- variant (C++14 variant implementation) - `deps/variant/`
+- rapidjson (JSON parsing) - `deps/rapidjson/`
+- gtest (for testing) - system dependency
+- benchmark (for performance testing) - system dependency
+
+Run `git submodule update --init --recursive` to initialize dependencies.
+
+### Swift Package Manager Integration
+
+This repository is prepared for consumption by Swift Package Manager:
+
+**For Swift Package creators:**
+- Include paths are organized in `deps/include/` for easy SPM integration
+- Use `geojsonvt-umbrella.h` as the main header for Swift bridging
+- Module map available at `module.modulemap`
+- All dependencies are header-only and included via git submodules
+
+**Required compiler flags for SPM:**
+- `-I include -I deps/include`
+- `-std=c++14` (minimum)
+- Enable C++ interoperability with `.interoperabilityMode(.Cxx)`
 
 ## Architecture
 

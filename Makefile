@@ -1,38 +1,20 @@
-CXXFLAGS += -I include -std=c++14 -Wall -Wextra -D_GLIBCXX_USE_CXX11_ABI=0
+CXXFLAGS += -I include -I deps/include -std=c++14 -Wall -Wextra -D_GLIBCXX_USE_CXX11_ABI=0
 RELEASE_FLAGS ?= -O3 -DNDEBUG -g -ggdb3
 DEBUG_FLAGS ?= -g -O0 -DDEBUG
 
-MASON ?= .mason/mason
+# Using local dependencies via git submodules
+BASE_FLAGS = -I deps/include
+RAPIDJSON_FLAGS = -I deps/include
+GTEST_FLAGS = -lgtest -lpthread
+BENCHMARK_FLAGS = -lbenchmark
+GLFW_FLAGS = -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 
-VARIANT = variant 1.1.5
-GEOMETRY = geometry 1.0.0
-GEOJSON = geojson 0.4.3
-GLFW = glfw 3.1.2
-GTEST = gtest 1.8.0
-RAPIDJSON = rapidjson 1.1.0
-BENCHMARK = benchmark 1.4.1
-
-VARIANT_FLAGS = `$(MASON) cflags $(VARIANT)`
-GEOMETRY_FLAGS = `$(MASON) cflags $(GEOMETRY)`
-GEOJSON_FLAGS = `$(MASON) cflags $(GEOJSON)`
-GLFW_FLAGS = `$(MASON) cflags $(GLFW)` `$(MASON) static_libs $(GLFW)` `$(MASON) ldflags $(GLFW)`
-GTEST_FLAGS = `$(MASON) cflags $(GTEST)` `$(MASON) static_libs $(GTEST)` `$(MASON) ldflags $(GTEST)`
-RAPIDJSON_FLAGS = `$(MASON) cflags $(RAPIDJSON)`
-BASE_FLAGS = $(VARIANT_FLAGS) $(GEOMETRY_FLAGS) $(GEOJSON_FLAGS)
-BENCHMARK_FLAGS = `$(MASON) cflags $(BENCHMARK)` `$(MASON) static_libs $(BENCHMARK)` `$(MASON) ldflags $(BENCHMARK)`
-
-DEPS = mason_packages/headers/geometry include/mapbox/geojsonvt/*.hpp include/mapbox/geojsonvt.hpp bench/util.hpp Makefile
+DEPS = deps/include/mapbox/geometry.hpp include/mapbox/geojsonvt/*.hpp include/mapbox/geojsonvt.hpp bench/util.hpp Makefile
 
 default: test
 
-mason_packages/headers/geometry: Makefile
-	$(MASON) install $(VARIANT)
-	$(MASON) install $(GEOMETRY)
-	$(MASON) install $(GEOJSON)
-	$(MASON) install $(GLFW)
-	$(MASON) install $(GTEST)
-	$(MASON) install $(RAPIDJSON)
-	$(MASON) install $(BENCHMARK)
+deps/include/mapbox/geometry.hpp: deps/geometry/include/mapbox/geometry.hpp
+	@echo "Dependencies are managed via git submodules. Run 'git submodule update --init --recursive' if needed."
 
 build:
 	mkdir -p build
