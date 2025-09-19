@@ -1,5 +1,6 @@
 /mason_packages
 /build
+.build/
 
 # Claude Code
 .claude/
