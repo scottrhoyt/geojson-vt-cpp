@@ -13,6 +13,13 @@ DEPS = deps/include/mapbox/geometry.hpp include/mapbox/geojsonvt/*.hpp include/m
 
 default: test
 
+build-lib: build build/lib
+	@echo "Library built successfully"
+
+build/lib: build include/mapbox/geojsonvt/*.hpp include/mapbox/geojsonvt.hpp $(DEPS)
+	$(CXX) $(CFLAGS) $(CXXFLAGS) $(RELEASE_FLAGS) -c include/mapbox/geojsonvt.hpp -o build/geojsonvt.hpp.gch $(BASE_FLAGS) $(RAPIDJSON_FLAGS)
+	@echo "Library headers compiled and validated"
+
 deps/include/mapbox/geometry.hpp: deps/geometry/include/mapbox/geometry.hpp
 	@echo "Dependencies are managed via git submodules. Run 'git submodule update --init --recursive' if needed."
 
